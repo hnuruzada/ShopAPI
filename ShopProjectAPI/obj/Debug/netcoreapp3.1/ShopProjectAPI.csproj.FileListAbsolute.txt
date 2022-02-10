@@ -58,3 +58,7 @@ C:\Users\Hesen\source\repos\ShopProjectAPI\ShopProjectAPI\obj\Debug\netcoreapp3.
 C:\Users\Hesen\source\repos\ShopProjectAPI\ShopProjectAPI\obj\Debug\netcoreapp3.1\ShopProjectAPI.dll
 C:\Users\Hesen\source\repos\ShopProjectAPI\ShopProjectAPI\obj\Debug\netcoreapp3.1\ShopProjectAPI.pdb
 C:\Users\Hesen\source\repos\ShopProjectAPI\ShopProjectAPI\obj\Debug\netcoreapp3.1\ShopProjectAPI.genruntimeconfig.cache
+C:\Users\Hesen\source\repos\ShopProjectAPI\ShopProjectAPI\obj\Debug\netcoreapp3.1\ShopProjectAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Hesen\source\repos\ShopProjectAPI\ShopProjectAPI\bin\Debug\netcoreapp3.1\FluentValidation.dll
+C:\Users\Hesen\source\repos\ShopProjectAPI\ShopProjectAPI\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
+C:\Users\Hesen\source\repos\ShopProjectAPI\ShopProjectAPI\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
