@@ -31,18 +31,8 @@ namespace ShopProjectAPI.Controllers
         {
             if (_context.Categories.Any(x => x.Name.ToUpper() == catregoryDto.Name.Trim().ToUpper()))
                 return StatusCode(409);
-            if (catregoryDto.Image == null)
-            {
-                return NotFound();
-            }
-            if (!catregoryDto.Image.IsSizeOkay(2))
-            {
-                return NotFound();
-            }
-            if (!catregoryDto.Image.IsImage())
-            {
-                return NotFound();
-            }
+           
+            
             Category category = new Category
             {
                 Name = catregoryDto.Name,
@@ -90,7 +80,7 @@ namespace ShopProjectAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, CategoryPostDto categoryDto)
+        public IActionResult Update(int id,[FromForm] CategoryPostDto categoryDto)
         {
             Category category = _context.Categories.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
 
@@ -98,15 +88,7 @@ namespace ShopProjectAPI.Controllers
 
             if (categoryDto.Image != null)
             {
-                if (!categoryDto.Image.IsImage())
-                {
-                    return NotFound();
-                }
-                if (!categoryDto.Image.IsSizeOkay(2))
-                {
-                    return NotFound();
-                }
-
+                
 
                 Helpers.Helper.DeleteImg(_env.WebRootPath, "Assets/CategoryImg", category.Image);
                 category.Image = categoryDto.Image.SaveImg(_env.WebRootPath, "Assets/CategoryImg");
