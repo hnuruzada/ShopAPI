@@ -68,7 +68,8 @@ namespace ShopProjectAPI.Controllers
                 Id = category.Id,
                 Name = category.Name,
                 CreatedAt = category.CreatedAt,
-                ModifiedAt = category.ModifiedAt
+                ModifiedAt = category.ModifiedAt,
+                Image=category.Image,
             };
 
             return Ok(categoryDto);
@@ -82,7 +83,7 @@ namespace ShopProjectAPI.Controllers
             ListDto<CategoryListItemDto> listDto = new ListDto<CategoryListItemDto>
             {
                 TotalCount = query.Count(),
-                Items = query.Skip((page - 1) * 8).Take(8).Select(x => new CategoryListItemDto { Id = x.Id, Name = x.Name }).ToList()
+                Items = query.Skip((page - 1) * 8).Take(8).Select(x => new CategoryListItemDto { Id = x.Id, Name = x.Name,Image=x.Image }).ToList()
             };
 
             return Ok(listDto);
