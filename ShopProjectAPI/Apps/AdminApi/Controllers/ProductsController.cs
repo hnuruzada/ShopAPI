@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopProjectAPI.Apps.AdminApi.DTOs;
 using ShopProjectAPI.Apps.AdminApi.DTOs.ProductDtos;
@@ -13,31 +14,25 @@ namespace ShopProjectAPI.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ShopDbContext _context;
-
-        public ProductsController(ShopDbContext context)
+        private readonly IMapper _mapper;
+        public ProductsController(ShopDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
        
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Product product = _context.Products.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
+            Product product = _context.Products.Include(x=>x.Category).ThenInclude(c=>c.Products).FirstOrDefault(x => x.Id == id && !x.IsDeleted);
 
             if (product == null) return NotFound();
 
            
 
-            ProductGetDto productDto = new ProductGetDto
-            {
-                Id = product.Id,
-                CostPrice = product.CostPrice,
-                SalePrice = product.SalePrice,
-                Name = product.Name,
-                CreatedAt = product.CreatedAt,
-                ModifiedAt = product.ModifiedAt
-            };
+            ProductGetDto productDto = _mapper.Map<ProductGetDto>(product);
+
 
 
             return Ok(productDto);
@@ -47,7 +42,7 @@ namespace ShopProjectAPI.Controllers
         [HttpGet]
         public IActionResult GetAll(int page = 1, string search = null)
         {
-            var query = _context.Products.Where(x => !x.IsDeleted);
+            var query = _context.Products.Include(x=>x.Category).Where(x => !x.IsDeleted);
 
             if (!string.IsNullOrWhiteSpace(search))
                 query = query.Where(x => x.Name.Contains(search));
@@ -60,8 +55,16 @@ namespace ShopProjectAPI.Controllers
                         Id = x.Id,
                         Name = x.Name,
                         SalePrice = x.SalePrice,
-                        CostPrice = x.CostPrice
-                       
+                        CostPrice = x.CostPrice,
+                         Category = new CategoryInProductListItemDto
+                         {
+
+                             Id = x.CategoryId,
+                             Name = x.Category.Name
+                            
+                            
+                         }
+
                     }).ToList(),
                 TotalCount = query.Count()
             };
@@ -76,12 +79,15 @@ namespace ShopProjectAPI.Controllers
         [HttpPost]
         public IActionResult Create(ProductPostDto productDto)
         {
-            Product product = new Product
-            {
-                Name = productDto.Name,
-                SalePrice = productDto.SalePrice,
-                CostPrice = productDto.CostPrice
-            };
+            //Product product = new Product
+            //{
+            //    Name = productDto.Name,
+            //    SalePrice = productDto.SalePrice,
+            //    CostPrice = productDto.CostPrice,
+            //    CategoryId = productDto.CategoryId
+
+            //};
+            Product product = _mapper.Map<Product>(productDto);
 
             _context.Products.Add(product);
             _context.SaveChanges();
@@ -97,6 +103,9 @@ namespace ShopProjectAPI.Controllers
             if (existProduct == null)
                 return NotFound();
 
+            if(existProduct.CategoryId != productDto.CategoryId && !_context.Categories.Any(c => c.Id == productDto.CategoryId && !c.IsDeleted))
+                return NotFound();
+            existProduct.CategoryId = productDto.CategoryId;
             existProduct.Name = productDto.Name;
             existProduct.SalePrice = productDto.SalePrice;
             existProduct.CostPrice = productDto.CostPrice;

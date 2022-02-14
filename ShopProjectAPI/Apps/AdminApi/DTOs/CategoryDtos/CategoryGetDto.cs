@@ -9,5 +9,6 @@ namespace ShopProjectAPI.Apps.AdminApi.DTOs.CategoryDtos
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public string Image { get; internal set; }
+        public int ProductsCount { get; set; }
     }
 }

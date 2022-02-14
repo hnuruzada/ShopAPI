@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopProjectAPI.Apps.AdminApi.DTOs;
@@ -12,18 +14,20 @@ using System.Linq;
 
 namespace ShopProjectAPI.Controllers
 {
-
+    //[Authorize(Roles = "Admin")]
     [Route("admin/api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {
         private readonly ShopDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(ShopDbContext context,IWebHostEnvironment env)
+        public CategoriesController(ShopDbContext context,IWebHostEnvironment env, IMapper mapper)
         {
             _context = context;
             _env=env;
+            _mapper=mapper;
         }
 
         [HttpPost("")]
@@ -53,14 +57,7 @@ namespace ShopProjectAPI.Controllers
 
             if (category == null) return NotFound();
 
-            CategoryGetDto categoryDto = new CategoryGetDto
-            {
-                Id = category.Id,
-                Name = category.Name,
-                CreatedAt = category.CreatedAt,
-                ModifiedAt = category.ModifiedAt,
-                Image=category.Image,
-            };
+            CategoryGetDto categoryDto = _mapper.Map<CategoryGetDto>(category);
 
             return Ok(categoryDto);
         }

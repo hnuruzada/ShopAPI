@@ -5,7 +5,12 @@
       "ProjectGuid": "5e05ac17-54e3-4f78-bd1b-11b2acb6e930",
       "DisplayName": "ShopProjectAPI",
       "ColorIndex": 0
+    },
+    "b86c6bb8-2e2a-4a2d-b488-531b87453053": {
+      "ProjectGuid": "b86c6bb8-2e2a-4a2d-b488-531b87453053",
+      "DisplayName": "ShopMVC",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }

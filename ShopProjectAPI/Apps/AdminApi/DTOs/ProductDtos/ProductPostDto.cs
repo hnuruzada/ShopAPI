@@ -4,6 +4,7 @@ namespace ShopProjectAPI.Apps.AdminApi.DTOs.ProductDtos
 {
     public class ProductPostDto
     {
+        public int CategoryId { get; set; }
         public string Name { get; set; }
         public double SalePrice { get; set; }
         public double CostPrice { get; set; }
@@ -12,6 +13,7 @@ namespace ShopProjectAPI.Apps.AdminApi.DTOs.ProductDtos
     {
         public ProductPostDtoValidator()
         {
+            RuleFor(x => x.CategoryId).NotEmpty().GreaterThanOrEqualTo(1);
             RuleFor(x => x.Name)
                 .MaximumLength(50).WithMessage("Uzunluq max 50 ola biler , qaqa!")
                 .NotEmpty().WithMessage("Name mecburidir!");
